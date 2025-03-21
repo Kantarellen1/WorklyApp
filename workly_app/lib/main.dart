@@ -28,7 +28,6 @@ class UserServiceHomePage extends StatefulWidget {
 
 class _UserServiceHomePageState extends State<UserServiceHomePage> {
   final String apiBaseUrl = "http://localhost:5004/api/users"; // Update with your API base URL
-  final TextEditingController registerUsernameController = TextEditingController();
   final TextEditingController registerPasswordController = TextEditingController();
   final TextEditingController registerEmailController = TextEditingController();
   final TextEditingController loginUsernameController = TextEditingController();
@@ -38,7 +37,6 @@ class _UserServiceHomePageState extends State<UserServiceHomePage> {
   String loginResult = "";
 
   Future<void> registerUser() async {
-    final username = registerUsernameController.text;
     final password = registerPasswordController.text;
     final email = registerEmailController.text;
 
@@ -46,7 +44,7 @@ class _UserServiceHomePageState extends State<UserServiceHomePage> {
       final response = await http.post(
         Uri.parse('$apiBaseUrl/register'),
         headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({'username': username, 'password': password, 'email': email}),
+        body: jsonEncode({'password': password, 'email': email}),
       );
 
       if (response.statusCode == 200) {
@@ -105,21 +103,16 @@ class _UserServiceHomePageState extends State<UserServiceHomePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Register', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-              TextField(
-                controller: registerUsernameController,
-                decoration: InputDecoration(labelText: 'Username'),
-              ),
-              TextField(
-                controller: registerPasswordController,
-                decoration: InputDecoration(labelText: 'Password'),
-                obscureText: true,
-              ),
               TextField(
                 controller: registerEmailController,
                 decoration: InputDecoration(labelText: 'Email'),
               ),
               SizedBox(height: 10),
+              TextField(
+                controller: registerPasswordController,
+                decoration: InputDecoration(labelText: 'Password'),
+                obscureText: true,
+              ),
               ElevatedButton(
                 onPressed: registerUser,
                 child: Text('Register'),
@@ -130,7 +123,7 @@ class _UserServiceHomePageState extends State<UserServiceHomePage> {
               Text('Login', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               TextField(
                 controller: loginUsernameController,
-                decoration: InputDecoration(labelText: 'Username'),
+                decoration: InputDecoration(labelText: 'Email or Username'),
               ),
               TextField(
                 controller: loginPasswordController,
